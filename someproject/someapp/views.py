@@ -1,14 +1,21 @@
 
-from django.shortcuts import HttpResponse, render, get_object_or_404
-from .models import Item
-from django.db.models import Min, F 
+from django.shortcuts import render, get_object_or_404
+from .models import *
+from django.db.models import Count, F 
+
 def get_items(request):
-    items = (
-        Item.objects  
+    result = (
+        Book
+        .objects
+        .values('publisher')
         .aggregate(
-            min_cost=Min(F('price') * F('quantity')), 
+            sum_book=Count(F('id')), 
         )
     )
 
-    min_cost = items['min_cost']
-    return HttpResponse({min_cost})
+    return render(request,
+              'main.html',
+              {'sum_book': result})
+
+    # sum_book = items['book']
+    # return HttpResponse({sum_book})
