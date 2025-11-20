@@ -1,21 +1,22 @@
 
-from django.shortcuts import render, get_object_or_404
-from .models import *
-from django.db.models import Count, F 
+from django.shortcuts import render
+from .models import Book
+from django.db.models import Count, F
 
 def get_items(request):
     result = (
         Book
         .objects
-        .values('publisher')
-        .aggregate(
+        .values('publisher__name') 
+        .annotate(
             sum_book=Count(F('id')), 
         )
     )
 
-    return render(request,
-              'main.html',
-              {'sum_book': result})
+    # total_books = sum(item['sum_book'] for item in result)
 
-    # sum_book = items['book']
-    # return HttpResponse({sum_book})
+    return render(request, 'main.html', {
+        'publishers': result,
+        # 'total_books': total_books  
+
+    })
