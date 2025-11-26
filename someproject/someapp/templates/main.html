@@ -6,22 +6,7 @@
     <title>Document</title>
 </head>
 <body>
- <h1>Количество книг в каждом издательстве</h1>
 <table>
-    <thead>
-        <tr>
-            <th>Издательство</th>
-            <th>Количество книг</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for publisher in publishers %}
-        <tr>
-            <td>{{ publisher.publisher__name }}</td>
-            <td>{{ publisher.sum_book }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+{% get_items %}
 </body>
 </html>
